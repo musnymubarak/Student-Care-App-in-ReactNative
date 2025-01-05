@@ -1,32 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Button, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-
-const courseData = {
-    courseName: 'Computer Science',
-    courseDescription: 'An introductory course to computer science, covering topics like algorithms, data structures, and programming.',
-    subjects: ['Algorithms', 'Data Structures', 'Discrete Mathematics', 'Database Systems'],
-};
+import { students } from '../assets/StudentsDb'; // Import the students data
+import { courses } from '../assets/StudentsDb'; // Import the courses data
 
 export default function Course() {
     const navigation = useNavigation();
+    const [studentData, setStudentData] = useState(null);
+    const [courseData, setCourseData] = useState(null);
+
+    useEffect(() => {
+        const username = localStorage.getItem('username'); // Get the username from localStorage
+
+        if (username) {
+            const student = students.find(student => student.username === username);
+            if (student) {
+                setStudentData(student);
+                const course = courses.find(course => course.id === student.course_id);
+                setCourseData(course);
+            }
+        }
+    }, []);
 
     const navigateToSubjects = () => {
-        navigation.navigate('Subjects', { subjects: courseData.subjects }); // Pass subjects as params
+        if (courseData) {
+            navigation.navigate('Subjects', { subjects: courseData.subjects }); // Pass subjects as params
+        }
     };
+
+    if (!studentData || !courseData) {
+        return (
+            <View style={styles.container}>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
 
     return (
         <PaperProvider>
             <View style={styles.container}>
-                <Text style={styles.courseName}>{courseData.courseName}</Text>
-                <Text style={styles.description}>{courseData.courseDescription}</Text>
-                <Button
-                    title="View Subjects"
-                    onPress={navigateToSubjects}
-                />
+                <Text style={styles.courseName}>{courseData.name}</Text>
+                <Text style={styles.courseCode}>Course Code: {courseData.course_code}</Text>
+                <Text style={styles.description}>{courseData.description}</Text>
+                <Button title="View Subjects" onPress={navigateToSubjects} />
             </View>
 
             <View style={styles.footerMenu}>
@@ -34,11 +52,7 @@ export default function Course() {
                     style={styles.footerIconContainer}
                     onPress={() => navigation.navigate('Profile')}
                 >
-                    <Icon
-                        name="account-circle"
-                        size={30}
-                        color="#510e51"
-                    />
+                    <Icon name="account-circle" size={30} color="#510e51" />
                     <Text style={styles.footerText}>Profile</Text>
                 </TouchableOpacity>
 
@@ -46,11 +60,7 @@ export default function Course() {
                     style={styles.footerIconContainer}
                     onPress={() => navigation.navigate('Course')}
                 >
-                    <Icon
-                        name="graduation-cap"
-                        size={30}
-                        color="#510e51"
-                    />
+                    <Icon name="graduation-cap" size={30} color="#510e51" />
                     <Text style={styles.footerText}>Course</Text>
                 </TouchableOpacity>
 
@@ -58,11 +68,7 @@ export default function Course() {
                     style={styles.footerIconContainer}
                     onPress={() => navigation.navigate('Subjects')}
                 >
-                    <Icon
-                        name="book"
-                        size={30}
-                        color="#510e51"
-                    />
+                    <Icon name="book" size={30} color="#510e51" />
                     <Text style={styles.footerText}>Subjects</Text>
                 </TouchableOpacity>
             </View>
@@ -81,6 +87,11 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 10,
+    },
+    courseCode: {
+        fontSize: 18,
+        marginBottom: 10,
+        fontStyle: 'italic',
     },
     description: {
         fontSize: 16,
