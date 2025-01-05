@@ -55,7 +55,7 @@ export default function Course() {
                 <Text style={[styles.courseInfo, styles.leftAligned]}>Department: {courseData.department}</Text>
                 <Text style={[styles.courseInfo, styles.leftAligned]}>Duration: {courseData.duration}</Text>
                 <Text style={[styles.courseInfo, styles.leftAligned]}>Description: {courseData.description}</Text>
-
+                
                 <View style={styles.separator} />
             </View>
 

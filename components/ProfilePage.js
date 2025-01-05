@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
-import { students } from '../assets/StudentsDb'; // Import your student database
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { students } from '../assets/StudentsDb';
 import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // AsyncStorage for persistent data storage
-import FooterMenu from '../common/FooterMenu'; // Import the FooterMenu component from the common folder
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import FooterMenu from '../common/FooterMenu'; 
 import Footer from '../common/Footer';
 
 export default function ProfilePage() {
@@ -14,33 +14,30 @@ export default function ProfilePage() {
     useEffect(() => {
         const getLoggedInUsername = async () => {
             try {
-                // Fetch the logged-in username from AsyncStorage
                 const loggedInUsername = await AsyncStorage.getItem('username');
-
-                // Find the student from your students database using the fetched username
                 const student = students.find(student => student.username === loggedInUsername);
 
                 if (student) {
-                    setUser(student); // If student exists, set user state
+                    setUser(student); 
                 } else {
-                    navigation.navigate('Login'); // If no student found, navigate to Login
+                    navigation.navigate('Login');
                 }
             } catch (error) {
-                console.error('Error fetching username from AsyncStorage', error); // Log any error
+                console.error('Error fetching username from AsyncStorage', error); 
             }
         };
 
-        getLoggedInUsername(); // Call the function to fetch user on page load
+        getLoggedInUsername();
     }, [navigation]);
 
     if (!user) {
-        return <Text>Loading...</Text>; // Display loading text while user data is being fetched
+        return <Text>Loading...</Text>; 
     }
 
     return (
         <PaperProvider>
             <View style={styles.mainContainer}>
-                <View style={styles.profileContent}>
+                <ScrollView contentContainerStyle={styles.profileContent}>
                     <Image source={user.profile_pic} style={styles.profilePic} />
                     <Text style={styles.heading}>{user.name}</Text>
                     <Text style={styles.email}>Age: {user.age} | Gender: {user.gender}</Text>
@@ -56,11 +53,11 @@ export default function ProfilePage() {
                     <Text style={[styles.email, styles.leftAligned]}>Gender: {user.gender}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Age: {user.age}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Blood Group: {user.blood_group}</Text>
-                </View>
+                </ScrollView>
 
                 <Footer />
-                <FooterMenu />
             </View>
+            <FooterMenu style={styles.footerMenu} />
         </PaperProvider>
     );
 }
@@ -69,12 +66,10 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        paddingBottom: 70, // Space for FooterMenu
     },
     profileContent: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexGrow: 1,
         padding: 20,
         backgroundColor: 'white',
         borderRadius: 15,
@@ -123,5 +118,11 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         width: '100%',
         paddingLeft: 10,
+    },
+    footerMenu: {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
     },
 });
