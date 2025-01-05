@@ -67,7 +67,6 @@ To get started with this app, follow these steps:
 - **AsyncStorage** – To persist user credentials and session data.
 - **React Navigation** – For handling navigation between different app screens.
 - **React Native Paper** – For UI components like buttons, text fields, and loading indicators.
-- **Axios** – For making API requests to fetch student data and course details.
 
 ## Contributing
 
