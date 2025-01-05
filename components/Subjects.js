@@ -1,43 +1,104 @@
-import React from 'react';
-import { StyleSheet, View, Text, Button, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { students, courses, subjects, marks } from '../assets/StudentsDb';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PaperProvider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Importing the icons
+import { useNavigation } from '@react-navigation/native'; // Importing useNavigation hook
 
-export default function Subjects({ route }) {
-    const navigation = useNavigation();
+export default function Subjects() {
+    const [studentData, setStudentData] = useState(null);
+    const navigation = useNavigation(); // Hook to access navigation
 
-    // Destructure subjects from route params
-    const { subjects } = route.params || {};
+    useEffect(() => {
+        const fetchStudentData = async () => {
+            const username = await AsyncStorage.getItem('username');
 
-    const renderSubject = ({ item }) => {
-        return (
-            <View style={styles.subjectItem}>
-                <Text style={styles.subjectText}>{item}</Text>
-            </View>
-        );
-    };
+            if (!username) {
+                console.error('No username found in AsyncStorage');
+                return;
+            }
+
+            console.log('Username from AsyncStorage:', username);
+
+            const student = students.find(student => student.username === username); // Matching username, not name
+
+            if (!student) {
+                console.error('Student not found');
+                return;
+            }
+
+            console.log('Student found:', student);
+
+            const studentCourse = courses.find(course => course.id === student.course_id);
+
+            if (!studentCourse) {
+                console.error('Course not found');
+                return;
+            }
+
+            const courseSubjects = subjects.filter(subject => subject.course_id === student.course_id);
+            const studentMarks = marks.filter(mark => mark.student_id === student.id);
+
+            const studentSubjects = courseSubjects.map(subject => {
+                const mark = studentMarks.find(mark => mark.subject_id === subject.id);
+                return {
+                    subjectName: subject.name,
+                    marks: mark ? mark.marks : 0
+                };
+            });
+
+            const totalMarks = studentSubjects.reduce((acc, curr) => acc + curr.marks, 0);
+            const averageMarks = studentSubjects.length > 0 ? totalMarks / studentSubjects.length : 0;
+
+            setStudentData({
+                name: student.name,
+                subjects: studentSubjects,
+                totalMarks,
+                averageMarks
+            });
+
+            console.log('Student Data:', studentData);
+        };
+
+        fetchStudentData();
+    }, []);
 
     return (
         <PaperProvider>
             <View style={styles.container}>
-                <Text style={styles.heading}>Subjects</Text>
-                <FlatList
-                    data={subjects}
-                    renderItem={renderSubject}
-                    keyExtractor={(item, index) => index.toString()}
-                />
+                <Text style={styles.title}>Student Subjects and Marks</Text>
+                {studentData ? (
+                    <View style={styles.dataContainer}>
+                        <Text style={styles.studentName}>{studentData.name}</Text>
+                        <Text style={styles.subtitle}>Subjects & Marks</Text>
+                        <FlatList
+                            data={studentData.subjects}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item }) => (
+                                <Text style={styles.subjectItem}>
+                                    {item.subjectName}: {item.marks} marks
+                                </Text>
+                            )}
+                        />
+                        <Text style={styles.totalMarks}>
+                            Total Marks: {studentData.totalMarks}
+                        </Text>
+                        <Text style={styles.averageMarks}>
+                            Average Marks: {studentData.averageMarks.toFixed(2)}
+                        </Text>
+                    </View>
+                ) : (
+                    <ActivityIndicator size="large" color="#4CAF50" />
+                )}
             </View>
+
             <View style={styles.footerMenu}>
                 <TouchableOpacity
                     style={styles.footerIconContainer}
                     onPress={() => navigation.navigate('Profile')}
                 >
-                    <Icon
-                        name="account-circle"
-                        size={30}
-                        color="#510e51"
-                    />
+                    <Icon name="account-circle" size={30} color="#510e51" />
                     <Text style={styles.footerText}>Profile</Text>
                 </TouchableOpacity>
 
@@ -45,11 +106,7 @@ export default function Subjects({ route }) {
                     style={styles.footerIconContainer}
                     onPress={() => navigation.navigate('Course')}
                 >
-                    <Icon
-                        name="graduation-cap"
-                        size={30}
-                        color="#510e51"
-                    />
+                    <Icon name="graduation-cap" size={30} color="#510e51" />
                     <Text style={styles.footerText}>Course</Text>
                 </TouchableOpacity>
 
@@ -57,11 +114,7 @@ export default function Subjects({ route }) {
                     style={styles.footerIconContainer}
                     onPress={() => navigation.navigate('Subjects')}
                 >
-                    <Icon
-                        name="book"
-                        size={30}
-                        color="#510e51"
-                    />
+                    <Icon name="book" size={30} color="#510e51" />
                     <Text style={styles.footerText}>Subjects</Text>
                 </TouchableOpacity>
             </View>
@@ -73,23 +126,54 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        backgroundColor: '#f5f5f5',
     },
-    heading: {
-        fontSize: 24,
+    title: {
+        fontSize: 28,
         fontWeight: 'bold',
-        marginBottom: 20,
+        color: '#333',
         textAlign: 'center',
+        marginBottom: 20,
+    },
+    dataContainer: {
+        marginTop: 20,
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        padding: 15,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
+    },
+    studentName: {
+        fontSize: 22,
+        fontWeight: '600',
+        color: '#444',
+        marginBottom: 10,
+    },
+    subtitle: {
+        fontSize: 18,
+        color: '#777',
+        marginBottom: 15,
     },
     subjectItem: {
-        padding: 10,
-        backgroundColor: '#f1f1f1',
-        marginBottom: 10,
-        borderRadius: 5,
+        fontSize: 16,
+        color: '#555',
+        marginVertical: 5,
     },
-    subjectText: {
-        fontSize: 18,
+    totalMarks: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#333',
+        marginTop: 10,
     },
-
+    averageMarks: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#333',
+        marginTop: 5,
+    },
     footerMenu: {
         flexDirection: 'row',
         justifyContent: 'space-between',
