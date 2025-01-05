@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
-import { students } from '../assets/StudentsDb'; // Import the students data
-import { courses } from '../assets/StudentsDb'; // Import the courses data
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
-import FooterMenu from '../common/FooterMenu'; // Import the FooterMenu component
+import { students } from '../assets/StudentsDb'; 
+import { courses } from '../assets/StudentsDb'; 
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import FooterMenu from '../common/FooterMenu'; 
 
 export default function Course() {
     const navigation = useNavigation();
@@ -15,7 +15,7 @@ export default function Course() {
     useEffect(() => {
         const getStudentData = async () => {
             try {
-                const username = await AsyncStorage.getItem('username'); // Get the username from AsyncStorage
+                const username = await AsyncStorage.getItem('username');
 
                 if (username) {
                     const student = students.find(student => student.username === username);
@@ -33,15 +33,9 @@ export default function Course() {
         getStudentData();
     }, []);
 
-    const navigateToSubjects = () => {
-        if (courseData) {
-            navigation.navigate('Subjects', { subjects: courseData.subjects }); // Pass subjects as params
-        }
-    };
-
     if (!studentData || !courseData) {
         return (
-            <View style={styles.container}>
+            <View style={styles.loadingContainer}>
                 <Text>Loading...</Text>
             </View>
         );
@@ -51,9 +45,17 @@ export default function Course() {
         <PaperProvider>
             <View style={styles.container}>
                 <Text style={styles.courseName}>{courseData.name}</Text>
-                <Text style={styles.courseCode}>Course Code: {courseData.course_code}</Text>
-                <Text style={styles.description}>{courseData.description}</Text>
-                <Button title="View Subjects" onPress={navigateToSubjects} />
+                <Text style={styles.courseCode}>Code: {courseData.course_code} | Dept: {courseData.department}</Text>
+
+                <View style={styles.separator} />
+
+                <Text style={[styles.sectionTitle, styles.leftAligned]}>Course Information</Text>
+                <Text style={[styles.courseInfo, styles.leftAligned]}>Code: {courseData.course_code}</Text>
+                <Text style={[styles.courseInfo, styles.leftAligned]}>Department: {courseData.department}</Text>
+                <Text style={[styles.courseInfo, styles.leftAligned]}>Duration: {courseData.duration}</Text>
+                <Text style={[styles.courseInfo, styles.leftAligned]}>Description: {courseData.description}</Text>
+
+                <View style={styles.separator} />
             </View>
 
             <FooterMenu />
@@ -64,23 +66,54 @@ export default function Course() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 20,
+        backgroundColor: 'White',
+    },
+    loadingContainer: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
+        backgroundColor: 'white',
     },
     courseName: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: 'bold',
-        marginBottom: 10,
+        color: '#333',
+        textAlign: 'center',
+        marginBottom: 20,
     },
     courseCode: {
-        fontSize: 18,
+        fontSize: 16,
+        color: '#777',
+        textAlign: 'center',
         marginBottom: 10,
-        fontStyle: 'italic',
     },
     description: {
         fontSize: 16,
+        color: '#555',
         textAlign: 'center',
         marginBottom: 20,
+    },
+    separator: {
+        width: '80%',
+        height: 1,
+        backgroundColor: '#ddd',
+        marginVertical: 15,
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#333',
+        marginBottom: 15,
+    },
+    leftAligned: {
+        textAlign: 'left',
+        width: '100%',
+        paddingLeft: 10,
+    },
+    courseInfo: {
+        fontSize: 16,
+        color: '#555',
+        marginBottom: 10,
     },
 });
