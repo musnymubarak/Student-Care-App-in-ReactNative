@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Use MaterialCommunityIcons
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const FooterMenu = () => {
     const navigation = useNavigation();
@@ -20,7 +20,7 @@ const FooterMenu = () => {
                 style={styles.footerIconContainer}
                 onPress={() => navigation.navigate('Course')}
             >
-                <Icon name="school" size={30} color="#510e51" />  {/* Graduation cap icon */}
+                <Icon name="school" size={30} color="#510e51" />  
                 <Text style={styles.footerText}>Course</Text>
             </TouchableOpacity>
 
@@ -28,7 +28,7 @@ const FooterMenu = () => {
                 style={styles.footerIconContainer}
                 onPress={() => navigation.navigate('Subjects')}
             >
-                <Icon name="book-open" size={30} color="#510e51" />  {/* Book open icon */}
+                <Icon name="book-open" size={30} color="#510e51" /> 
                 <Text style={styles.footerText}>Subjects</Text>
             </TouchableOpacity>
         </View>

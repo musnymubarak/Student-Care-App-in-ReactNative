@@ -15,7 +15,7 @@ export default function ProfilePage() {
             try {
                 // Fetch the logged-in username from AsyncStorage
                 const loggedInUsername = await AsyncStorage.getItem('username');
-                
+
                 // Find the student from your students database using the fetched username
                 const student = students.find(student => student.username === loggedInUsername);
 
@@ -40,7 +40,6 @@ export default function ProfilePage() {
         <PaperProvider>
             <View style={styles.mainContainer}>
                 <View style={styles.profileContent}>
-                    {/* Profile Picture */}
                     <Image source={user.profile_pic} style={styles.profilePic} />
                     <Text style={styles.heading}>{user.name}</Text>
                     <Text style={styles.email}>Age: {user.age} | Gender: {user.gender}</Text>
@@ -57,8 +56,7 @@ export default function ProfilePage() {
                     <Text style={[styles.email, styles.leftAligned]}>Age: {user.age}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Blood Group: {user.blood_group}</Text>
                 </View>
-
-                {/* Footer Menu positioned at the bottom */}
+                
                 <FooterMenu />
             </View>
         </PaperProvider>
@@ -67,18 +65,18 @@ export default function ProfilePage() {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1, 
-        flexDirection: 'column', 
+        flex: 1,
+        flexDirection: 'column',
         justifyContent: 'flex-start',
     },
     profileContent: {
-        flex: 1, 
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
         backgroundColor: 'white',
         borderRadius: 15,
-        overflow: 'hidden', 
+        overflow: 'hidden',
     },
     profilePic: {
         width: 200,

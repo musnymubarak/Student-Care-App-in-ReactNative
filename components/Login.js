@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import { PaperProvider, Appbar, TextInput, Button } from 'react-native-paper';
 import { students } from '../assets/StudentsDb'; 
 import { useNavigation } from '@react-navigation/native'; 
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 export default function Login() {
     const [username, setUsername] = React.useState('');
@@ -15,7 +15,7 @@ export default function Login() {
         const student = students.find(student => student.username === username && student.password === password);
 
         if (student) {
-            // Use AsyncStorage instead of localStorage to store username
+           
             await AsyncStorage.setItem('username', username);
             navigation.navigate('Profile');
         } else {

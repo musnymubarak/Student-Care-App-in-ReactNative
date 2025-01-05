@@ -8,8 +8,7 @@ import FooterMenu from '../common/FooterMenu';
 
 export default function Subjects() {
     const [studentData, setStudentData] = useState(null);
-    const navigation = useNavigation(); // Hook to access navigation
-
+    const navigation = useNavigation();
     useEffect(() => {
         const fetchStudentData = async () => {
             const username = await AsyncStorage.getItem('username');
