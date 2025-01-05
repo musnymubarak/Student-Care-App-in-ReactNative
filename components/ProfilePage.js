@@ -38,9 +38,11 @@ export default function ProfilePage() {
         <PaperProvider>
             <View style={styles.mainContainer}>
                 <ScrollView contentContainerStyle={styles.profileContent}>
-                    <Image source={user.profile_pic} style={styles.profilePic} />
-                    <Text style={styles.heading}>{user.name}</Text>
-                    <Text style={styles.email}>Age: {user.age} | Gender: {user.gender}</Text>
+                    <View style={styles.profileHeader}>
+                        <Image source={user.profile_pic} style={styles.profilePic} />
+                        <Text style={styles.heading}>{user.name}</Text>
+                        <Text style={styles.email}>Age: {user.age} | Gender: {user.gender}</Text>
+                    </View>
 
                     <View style={styles.separator} />
 
@@ -49,6 +51,7 @@ export default function ProfilePage() {
                     <Text style={[styles.phone, styles.leftAligned]}>Phone: {user.phone}</Text>
                     <Text style={[styles.address, styles.leftAligned]}>Address: {user.address}</Text>
 
+                
                     <Text style={[styles.sectionTitle, styles.leftAligned]}>Biological Information</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Gender: {user.gender}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Age: {user.age}</Text>
@@ -65,8 +68,8 @@ export default function ProfilePage() {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        flexDirection: 'column',
-        paddingBottom: 70, // Space for FooterMenu
+        paddingBottom: 70, 
+        position: 'relative', 
     },
     profileContent: {
         flexGrow: 1,
@@ -74,6 +77,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 15,
         overflow: 'hidden',
+    },
+    profileHeader: {
+        alignItems: 'center', 
+        marginBottom: 20,
     },
     profilePic: {
         width: 200,
@@ -87,6 +94,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 15,
         color: '#333',
+        textAlign: 'center', 
+    },
+    email: {
+        fontSize: 16,
+        color: '#555',
+        marginBottom: 10,
     },
     sectionTitle: {
         fontSize: 18,
@@ -94,34 +107,31 @@ const styles = StyleSheet.create({
         color: '#333',
         marginTop: 20,
     },
-    email: {
-        fontSize: 16,
-        color: '#555',
-        marginBottom: 10,
-    },
     phone: {
         fontSize: 16,
         color: '#555',
         marginBottom: 10,
+        textAlign: 'left',
     },
     address: {
         fontSize: 16,
         color: '#555',
-    },
-    separator: {
-        width: '80%',
-        height: 1,
-        backgroundColor: '#ddd',
-        marginVertical: 10,
+        textAlign: 'left', 
     },
     leftAligned: {
         textAlign: 'left',
         width: '100%',
         paddingLeft: 10,
     },
+    separator: {
+        width: '80%',
+        height: 1,
+        backgroundColor: '#ddd',
+        marginVertical: 10,
+        alignSelf: 'center',
+    },
     footerMenu: {
-        position: 'fixed',
-        bottom: 0,
+        position: 'absolute',
         left: 0,
         right: 0,
     },
