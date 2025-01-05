@@ -106,14 +106,11 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
     paddingHorizontal: 10,
   },
   logo: {
     width: 320,
     height: 100,
     resizeMode: 'contain',
-    marginBottom: 10,
   },
 });

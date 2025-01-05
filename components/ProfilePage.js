@@ -1,45 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { students } from '../assets/StudentsDb';
+import { students } from '../assets/StudentsDb'; // Import your student database
 import { useNavigation } from '@react-navigation/native';
-import { PaperProvider, Appbar } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Using MaterialCommunityIcons for both icons
+import { PaperProvider } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Material icons for both icons
+import AsyncStorage from '@react-native-async-storage/async-storage'; // AsyncStorage for persistent data storage
 
 export default function ProfilePage() {
     const [user, setUser] = useState(null);
     const navigation = useNavigation();
 
     useEffect(() => {
-        const loggedInUsername = localStorage.getItem('username');
-        const student = students.find(student => student.username === loggedInUsername);
+        const getLoggedInUsername = async () => {
+            try {
+                // Fetch the logged-in username from AsyncStorage
+                const loggedInUsername = await AsyncStorage.getItem('username');
+                
+                // Find the student from your students database using the fetched username
+                const student = students.find(student => student.username === loggedInUsername);
 
-        if (student) {
-            setUser(student);
-        } else {
-            navigation.navigate('Login');
-        }
+                if (student) {
+                    setUser(student); // If student exists, set user state
+                } else {
+                    navigation.navigate('Login'); // If no student found, navigate to Login
+                }
+            } catch (error) {
+                console.error('Error fetching username from AsyncStorage', error); // Log any error
+            }
+        };
+
+        getLoggedInUsername(); // Call the function to fetch user on page load
     }, [navigation]);
 
     if (!user) {
-        return <Text>Loading...</Text>;
+        return <Text>Loading...</Text>; // Display loading text while user data is being fetched
     }
 
     return (
         <PaperProvider>
             <View style={styles.mainContainer}>
-
-                <View style={styles.content}>
-                    <Image
-                        source={{ uri: 'https://vau.ac.lk/wp-content/uploads/2021/07/cropped-UoV_Logo.png' }}
-                        style={styles.image}
-                    />
-                </View>
-
                 <View style={styles.profileContent}>
-                    <Text style={styles.heading}>Welcome, {user.name}</Text>
-                    <Text style={styles.email}>Email: {user.email}</Text>
-                    <Text style={styles.phone}>Phone: {user.phone}</Text>
-                    <Text style={styles.address}>Address: {user.address}</Text>
+                    {/* Profile Picture */}
+                    <Image source={user.profile_pic} style={styles.profilePic} />
+                    <Text style={styles.heading}>{user.name}</Text>
+                    <Text style={styles.email}>Age: {user.age} | Gender: {user.gender}</Text>
+
+                    <View style={styles.separator} />
+
+                    <Text style={[styles.sectionTitle, styles.leftAligned]}>Contact Information</Text>
+                    <Text style={[styles.email, styles.leftAligned]}>Email: {user.email}</Text>
+                    <Text style={[styles.phone, styles.leftAligned]}>Phone: {user.phone}</Text>
+                    <Text style={[styles.address, styles.leftAligned]}>Address: {user.address}</Text>
+
+                    <Text style={[styles.sectionTitle, styles.leftAligned]}>Biological Information</Text>
+                    <Text style={[styles.email, styles.leftAligned]}>Gender: {user.gender}</Text>
+                    <Text style={[styles.email, styles.leftAligned]}>Age: {user.age}</Text>
+                    <Text style={[styles.email, styles.leftAligned]}>Blood Group: {user.blood_group}</Text>
                 </View>
 
                 <View style={styles.footerMenu}>
@@ -47,24 +63,15 @@ export default function ProfilePage() {
                         style={styles.footerIconContainer}
                         onPress={() => navigation.navigate('Profile')}
                     >
-                        <Icon
-                            name="account-circle"  
-                            size={30}
-                            color="#510e51"  
-                        />
+                        <Icon name="account-circle" size={30} color="#510e51" />
                         <Text style={styles.footerText}>Profile</Text>
                     </TouchableOpacity>
-
 
                     <TouchableOpacity
                         style={styles.footerIconContainer}
                         onPress={() => navigation.navigate('Course')}
                     >
-                        <Icon
-                            name="graduation-cap" 
-                            size={30}
-                            color="#510e51" 
-                        />
+                        <Icon name="graduation-cap" size={30} color="#510e51" />
                         <Text style={styles.footerText}>Course</Text>
                     </TouchableOpacity>
 
@@ -72,16 +79,10 @@ export default function ProfilePage() {
                         style={styles.footerIconContainer}
                         onPress={() => navigation.navigate('Subjects')}
                     >
-                        <Icon
-                            name="book" 
-                            size={30}
-                            color="#510e51"  
-                        />
+                        <Icon name="book" size={30} color="#510e51" />
                         <Text style={styles.footerText}>Subjects</Text>
                     </TouchableOpacity>
-
                 </View>
-
             </View>
         </PaperProvider>
     );
@@ -91,36 +92,33 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         justifyContent: 'space-between',
-        padding: 20,
-        backgroundColor: '#fff',  
-    },
-    appbar: {
-        backgroundColor: '#510e51',
-    },
-    appbarContent: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        padding: 20
     },
     profileContent: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+        backgroundColor: 'white',
     },
-    content: {
-        flex: 1,
-        alignItems: 'center',
-    },
-    image: {
-        width: 320,
-        height: 150,
-        resizeMode: 'contain',
+    profilePic: {
+        width: 200,
+        height: 200,
+        marginBottom: 15,
+        borderRadius: 75,
+        overflow: 'hidden',
     },
     heading: {
         fontSize: 26,
         fontWeight: 'bold',
         marginBottom: 15,
         color: '#333',
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333',
+        marginTop: 20,
     },
     email: {
         fontSize: 16,
@@ -135,6 +133,12 @@ const styles = StyleSheet.create({
     address: {
         fontSize: 16,
         color: '#555',
+    },
+    separator: {
+        width: '80%',
+        height: 1,
+        backgroundColor: '#ddd',
+        marginVertical: 10,
     },
     footerMenu: {
         flexDirection: 'row',
@@ -153,5 +157,10 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontSize: 14,
         color: '#510e51',
+    },
+    leftAligned: {
+        textAlign: 'left',
+        width: '100%',
+        paddingLeft: 10,
     },
 });

@@ -4,19 +4,19 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import { PaperProvider, Appbar, TextInput, Button } from 'react-native-paper';
 import { students } from '../assets/StudentsDb'; 
 import { useNavigation } from '@react-navigation/native'; 
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 export default function Login() {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const navigation = useNavigation(); 
 
-    const handleLogin = () => {
-       
+    const handleLogin = async () => {
         const student = students.find(student => student.username === username && student.password === password);
 
         if (student) {
-           
-            localStorage.setItem('username', username);
+            // Use AsyncStorage instead of localStorage to store username
+            await AsyncStorage.setItem('username', username);
             navigation.navigate('Profile');
         } else {
             alert('Invalid username or password');
@@ -28,7 +28,6 @@ export default function Login() {
             <View style={styles.mainContainer}>
                 
                 <View style={styles.content}>
-                   
                     <Text style={styles.heading}>STUDENT LOGIN</Text>
                     <TextInput
                         label="Username"
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
         width: 320,
         height: 150,
         resizeMode: 'contain',
-      },
+    },
     heading: {
         fontSize: 32,
         fontWeight: 'bold',

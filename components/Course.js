@@ -5,6 +5,7 @@ import { PaperProvider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { students } from '../assets/StudentsDb'; // Import the students data
 import { courses } from '../assets/StudentsDb'; // Import the courses data
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 export default function Course() {
     const navigation = useNavigation();
@@ -12,16 +13,24 @@ export default function Course() {
     const [courseData, setCourseData] = useState(null);
 
     useEffect(() => {
-        const username = localStorage.getItem('username'); // Get the username from localStorage
+        const getStudentData = async () => {
+            try {
+                const username = await AsyncStorage.getItem('username'); // Get the username from AsyncStorage
 
-        if (username) {
-            const student = students.find(student => student.username === username);
-            if (student) {
-                setStudentData(student);
-                const course = courses.find(course => course.id === student.course_id);
-                setCourseData(course);
+                if (username) {
+                    const student = students.find(student => student.username === username);
+                    if (student) {
+                        setStudentData(student);
+                        const course = courses.find(course => course.id === student.course_id);
+                        setCourseData(course);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching username from AsyncStorage', error);
             }
-        }
+        };
+
+        getStudentData();
     }, []);
 
     const navigateToSubjects = () => {
