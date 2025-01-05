@@ -2,20 +2,20 @@ import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { PaperProvider, Appbar, TextInput, Button } from 'react-native-paper';
-import { students } from '../assets/StudentsDb'; // Import the student data
-import { useNavigation } from '@react-navigation/native'; // For navigation
+import { students } from '../assets/StudentsDb'; 
+import { useNavigation } from '@react-navigation/native'; 
 
 export default function Login() {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const navigation = useNavigation(); // Get the navigation prop
+    const navigation = useNavigation(); 
 
     const handleLogin = () => {
-        // Check if username and password match
+       
         const student = students.find(student => student.username === username && student.password === password);
 
         if (student) {
-            // If user is found, save username in localStorage and navigate to profile page
+           
             localStorage.setItem('username', username);
             navigation.navigate('Profile');
         } else {
