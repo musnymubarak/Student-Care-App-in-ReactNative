@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { students } from '../assets/StudentsDb'; // Import your student database
 import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Material icons for both icons
 import AsyncStorage from '@react-native-async-storage/async-storage'; // AsyncStorage for persistent data storage
+import FooterMenu from '../common/FooterMenu'; // Import the FooterMenu component from the common folder
 
 export default function ProfilePage() {
     const [user, setUser] = useState(null);
@@ -58,31 +58,8 @@ export default function ProfilePage() {
                     <Text style={[styles.email, styles.leftAligned]}>Blood Group: {user.blood_group}</Text>
                 </View>
 
-                <View style={styles.footerMenu}>
-                    <TouchableOpacity
-                        style={styles.footerIconContainer}
-                        onPress={() => navigation.navigate('Profile')}
-                    >
-                        <Icon name="account-circle" size={30} color="#510e51" />
-                        <Text style={styles.footerText}>Profile</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.footerIconContainer}
-                        onPress={() => navigation.navigate('Course')}
-                    >
-                        <Icon name="graduation-cap" size={30} color="#510e51" />
-                        <Text style={styles.footerText}>Course</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.footerIconContainer}
-                        onPress={() => navigation.navigate('Subjects')}
-                    >
-                        <Icon name="book" size={30} color="#510e51" />
-                        <Text style={styles.footerText}>Subjects</Text>
-                    </TouchableOpacity>
-                </View>
+                {/* Footer Menu positioned at the bottom */}
+                <FooterMenu />
             </View>
         </PaperProvider>
     );
@@ -90,16 +67,18 @@ export default function ProfilePage() {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1,
-        justifyContent: 'space-between',
-        padding: 20
+        flex: 1, 
+        flexDirection: 'column', 
+        justifyContent: 'flex-start',
     },
     profileContent: {
-        flex: 1,
+        flex: 1, 
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
         backgroundColor: 'white',
+        borderRadius: 15,
+        overflow: 'hidden', 
     },
     profilePic: {
         width: 200,
@@ -139,24 +118,6 @@ const styles = StyleSheet.create({
         height: 1,
         backgroundColor: '#ddd',
         marginVertical: 10,
-    },
-    footerMenu: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        position: 'absolute',
-        bottom: 20,
-        left: 0,
-        right: 0,
-        paddingHorizontal: 20,
-    },
-    footerIconContainer: {
-        alignItems: 'center',
-        flex: 1,
-    },
-    footerText: {
-        marginTop: 5,
-        fontSize: 14,
-        color: '#510e51',
     },
     leftAligned: {
         textAlign: 'left',

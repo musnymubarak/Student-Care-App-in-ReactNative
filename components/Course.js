@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { students } from '../assets/StudentsDb'; // Import the students data
 import { courses } from '../assets/StudentsDb'; // Import the courses data
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import FooterMenu from '../common/FooterMenu'; // Import the FooterMenu component
 
 export default function Course() {
     const navigation = useNavigation();
@@ -56,31 +56,7 @@ export default function Course() {
                 <Button title="View Subjects" onPress={navigateToSubjects} />
             </View>
 
-            <View style={styles.footerMenu}>
-                <TouchableOpacity
-                    style={styles.footerIconContainer}
-                    onPress={() => navigation.navigate('Profile')}
-                >
-                    <Icon name="account-circle" size={30} color="#510e51" />
-                    <Text style={styles.footerText}>Profile</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.footerIconContainer}
-                    onPress={() => navigation.navigate('Course')}
-                >
-                    <Icon name="graduation-cap" size={30} color="#510e51" />
-                    <Text style={styles.footerText}>Course</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.footerIconContainer}
-                    onPress={() => navigation.navigate('Subjects')}
-                >
-                    <Icon name="book" size={30} color="#510e51" />
-                    <Text style={styles.footerText}>Subjects</Text>
-                </TouchableOpacity>
-            </View>
+            <FooterMenu />
         </PaperProvider>
     );
 }
@@ -106,23 +82,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         marginBottom: 20,
-    },
-    footerMenu: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        position: 'absolute',
-        bottom: 20,
-        left: 0,
-        right: 0,
-        paddingHorizontal: 20,
-    },
-    footerIconContainer: {
-        alignItems: 'center',
-        flex: 1,
-    },
-    footerText: {
-        marginTop: 5,
-        fontSize: 14,
-        color: '#510e51',
     },
 });
