@@ -5,6 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './components/Login';
 import ProfilePage from './components/ProfilePage';
+import Subjects from './components/Subjects';
+import Course from './components/Course';
 
 // Create a Stack Navigator
 const Stack = createStackNavigator();
@@ -20,6 +22,8 @@ export default function App() {
               <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Profile" component={ProfilePage} />
+                <Stack.Screen name="Course" component={Course} />
+                <Stack.Screen name="Subject" component={Subjects} />
               </Stack.Navigator>
             </ScrollView>
           </View>
