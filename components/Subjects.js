@@ -144,18 +144,18 @@ const styles = StyleSheet.create({
     },
     tableContainer: {
         marginTop: 20,
-        alignSelf: 'center', // Centers the table horizontally
-        width: '90%', // Adjusts the width to fit the container
-        borderWidth: 1, // Add border to the table
-        borderColor: '#ddd', // Light gray border
-        borderRadius: 8, // Rounded corners
+        alignSelf: 'center', 
+        width: '90%', 
+        borderWidth: 1, 
+        borderColor: '#ddd', 
+        borderRadius: 8, 
     },
     tableHeaderRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 5,
-        borderBottomWidth: 1, // Border between header and rows
-        borderBottomColor: '#ddd', // Light gray border for header separation
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd', 
     },
     tableHeader: {
         fontSize: 18,
@@ -163,19 +163,19 @@ const styles = StyleSheet.create({
         color: '#333',
         width: '45%',
         textAlign: 'left',
-        padding: 10, // Add padding for header cells
+        padding: 10, 
     },
     tableRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 5,
-        borderBottomWidth: 1, // Border between rows
-        borderBottomColor: '#ddd', // Light gray border between rows
+        borderBottomWidth: 1, 
+        borderBottomColor: '#ddd', 
     },
     tableCell: {
         fontSize: 16,
         color: '#555',
         width: '45%',
-        padding: 10, // Add padding for table cells
+        padding: 10, 
     },
 });
