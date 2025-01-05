@@ -1,33 +1,37 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { PaperProvider, Appbar, TextInput, Button } from 'react-native-paper';
-import { students } from '../assets/StudentsDb'; 
-import { useNavigation } from '@react-navigation/native'; 
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import { PaperProvider, TextInput, Button } from 'react-native-paper';
+import { students } from '../assets/StudentsDb';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Footer from '../common/Footer';
 
 export default function Login() {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const navigation = useNavigation(); 
+    const [error, setError] = React.useState('');
+    const navigation = useNavigation();
 
     const handleLogin = async () => {
+        if (!username || !password) {
+            setError('Username or password cannot be empty');
+            return;
+        }
+
         const student = students.find(student => student.username === username && student.password === password);
 
         if (student) {
-           
             await AsyncStorage.setItem('username', username);
             navigation.navigate('Profile');
         } else {
-            alert('Invalid username or password');
+            setError('Username or password incorrect');
         }
     };
 
     return (
         <PaperProvider>
             <View style={styles.mainContainer}>
-                
                 <View style={styles.content}>
                     <Text style={styles.heading}>STUDENT LOGIN</Text>
                     <TextInput
@@ -53,9 +57,17 @@ export default function Login() {
                     >
                         Login
                     </Button>
+
+                    {error ? (
+                        <View style={styles.errorContainer}>
+                            <Image
+                                source={require('../assets/error.png')}
+                                style={styles.errorImage}
+                            />
+                            <Text style={styles.errorText}>{error}</Text>
+                        </View>
+                    ) : null}
                 </View>
-
-
             </View>
 
             <Footer />
@@ -70,21 +82,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 20,
     },
-    appbar: {
-        backgroundColor: '#510e51',
-    },
-    appbarContent: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     content: {
         flex: 1,
         alignItems: 'center',
-    },
-    image: {
-        width: 320,
-        height: 150,
-        resizeMode: 'contain',
     },
     heading: {
         fontSize: 32,
@@ -103,5 +103,20 @@ const styles = StyleSheet.create({
     },
     buttonLabel: {
         color: 'white',
+    },
+    errorContainer: {
+        marginTop: 20,
+        flexDirection: 'row',
+        alignItems: 'center', 
+    },
+    errorImage: {
+        width: 20,  
+        height: 20,  
+        marginRight: 10,  
+    },
+    errorText: {
+        color: '#510e51', 
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
