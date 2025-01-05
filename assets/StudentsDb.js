@@ -5,7 +5,7 @@ export const students = [
     "name": "Alice Johnson",
     "age": 21,
     "course_id": 1,
-    "username": "Alice.j",
+    "username": "Alice",
     "password": "s123",
     "profile_pic": require('../assets/profilepic/1.jpg'),
     "address": "123 Maple Street, Springfield",

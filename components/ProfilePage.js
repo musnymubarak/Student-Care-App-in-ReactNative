@@ -1,43 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { students } from '../assets/StudentsDb'; 
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { students } from '../assets/StudentsDb';
+import { useNavigation } from '@react-navigation/native';
 
-const ProfilePage = () => {
-  const [user, setUser] = useState(null);
+export default function ProfilePage() {
+    const [user, setUser] = useState(null); 
+    const navigation = useNavigation(); 
+    useEffect(() => {
+        const loggedInUsername = localStorage.getItem('username');
+        
+        const student = students.find(student => student.username === loggedInUsername);
+        
+        if (student) {
+            setUser(student); 
+        } else {
+            navigation.navigate('Login');
+        }
+    }, [navigation]);
 
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem('username');
-    
-    if (loggedInUser) {
-      
-      const studentDetails = students.find((student) => student.username === loggedInUser);
-      if (studentDetails) {
-        setUser(studentDetails);
-      }
+    if (!user) {
+        return <Text>Loading...</Text>;
     }
-  }, []);
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
+    return (
+        <View style={styles.profileContainer}>
+            <Text style={styles.heading}>Welcome, {user.name}</Text>
+            <Text style={styles.email}>Email: {user.email}</Text>
+            <Text style={styles.phone}>Phone: {user.phone}</Text>
+            <Text style={styles.address}>Address: {user.address}</Text>
+        </View>
+    );
+}
 
-  return (
-    <div className="profile-container">
-      <div className="profile-header">
-        <h2>{user.name}</h2>
-        <img src={user.profile_pic} alt={user.name} className="profile-pic" />
-      </div>
-      <div className="profile-details">
-        <h3>Contact Information</h3>
-        <p>Email: {user.email}</p>
-        <p>Phone: {user.phone}</p>
-        <h3>Biological Information</h3>
-        <p>Gender: {user.gender}</p>
-        <p>Blood Group: {user.blood_group}</p>
-        <h3>Address</h3>
-        <p>{user.address}</p>
-      </div>
-    </div>
-  );
-};
-
-export default ProfilePage;
+const styles = StyleSheet.create({
+    profileContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    heading: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    profilePic: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginBottom: 20,
+    },
+    email: {
+        fontSize: 16,
+        marginBottom: 10,
+    },
+    phone: {
+        fontSize: 16,
+        marginBottom: 10,
+    },
+    address: {
+        fontSize: 16,
+    },
+});
