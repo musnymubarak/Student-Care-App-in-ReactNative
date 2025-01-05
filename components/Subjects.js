@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { students, courses, subjects, marks } from '../assets/StudentsDb';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet,  } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PaperProvider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native'; 
@@ -10,6 +10,7 @@ import Footer from '../common/Footer';
 export default function Subjects() {
     const [studentData, setStudentData] = useState(null);
     const navigation = useNavigation();
+
     useEffect(() => {
         const fetchStudentData = async () => {
             const username = await AsyncStorage.getItem('username');
@@ -19,16 +20,12 @@ export default function Subjects() {
                 return;
             }
 
-            console.log('Username from AsyncStorage:', username);
-
-            const student = students.find(student => student.username === username); // Matching username, not name
+            const student = students.find(student => student.username === username);
 
             if (!student) {
                 console.error('Student not found');
                 return;
             }
-
-            console.log('Student found:', student);
 
             const studentCourse = courses.find(course => course.id === student.course_id);
 
@@ -52,13 +49,12 @@ export default function Subjects() {
             const averageMarks = studentSubjects.length > 0 ? totalMarks / studentSubjects.length : 0;
 
             setStudentData({
-                name: student.name,
+                courseTitle: studentCourse.name,
                 subjects: studentSubjects,
+                totalSubjects: studentSubjects.length,
                 totalMarks,
-                averageMarks
+                averageMarks: Math.round(averageMarks) // Round to the nearest whole number
             });
-
-            console.log('Student Data:', studentData);
         };
 
         fetchStudentData();
@@ -69,31 +65,33 @@ export default function Subjects() {
             <View style={styles.container}>
                 <Text style={styles.title}>Student Subjects and Marks</Text>
                 {studentData ? (
-                    <View style={styles.dataContainer}>
-                        <Text style={styles.studentName}>{studentData.name}</Text>
-                        <Text style={styles.subtitle}>Subjects & Marks</Text>
-                        <FlatList
-                            data={studentData.subjects}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={({ item }) => (
-                                <Text style={styles.subjectItem}>
-                                    {item.subjectName}: {item.marks} marks
-                                </Text>
-                            )}
-                        />
-                        <Text style={styles.totalMarks}>
-                            Total Marks: {studentData.totalMarks}
-                        </Text>
-                        <Text style={styles.averageMarks}>
-                            Average Marks: {studentData.averageMarks.toFixed(2)}
-                        </Text>
-                    </View>
+                    <ScrollView contentContainerStyle={styles.dataContainer}>
+                        <Text style={styles.courseTitle}>{studentData.courseTitle}</Text>
+                        <Text style={styles.totalSubjects}> {studentData.totalSubjects} Subjects | Average: {studentData.averageMarks}</Text>
+
+                        <View style={styles.tableContainer}>
+                            <View style={styles.tableHeaderRow}>
+                                <Text style={styles.tableHeader}>Subject Name</Text>
+                                <Text style={styles.tableHeader}>Marks</Text>
+                            </View>
+
+                            <FlatList
+                                data={studentData.subjects}
+                                keyExtractor={(item, index) => index.toString()}
+                                renderItem={({ item }) => (
+                                    <View style={styles.tableRow}>
+                                        <Text style={styles.tableCell}>{item.subjectName}</Text>
+                                        <Text style={styles.tableCell}>{item.marks}</Text>
+                                    </View>
+                                )}
+                            />
+                        </View>
+                    </ScrollView>
                 ) : (
                     <ActivityIndicator size="large" color="#4CAF50" />
                 )}
             </View>
 
-            
             <Footer />
             <FooterMenu />
         </PaperProvider>
@@ -113,6 +111,26 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 20,
     },
+    courseTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: '#444',
+        marginBottom: 10,
+        textAlign: 'center',
+    },
+    totalSubjects: {
+        fontSize: 16,
+        color: '#777',
+        marginBottom: 10,
+        textAlign: 'center',
+    },
+    averageMarks: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#333',
+        marginBottom: 20,
+        textAlign: 'center',
+    },
     dataContainer: {
         marginTop: 20,
         backgroundColor: '#fff',
@@ -124,32 +142,40 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 3,
     },
-    studentName: {
-        fontSize: 22,
-        fontWeight: '600',
-        color: '#444',
-        marginBottom: 10,
+    tableContainer: {
+        marginTop: 20,
+        alignSelf: 'center', // Centers the table horizontally
+        width: '90%', // Adjusts the width to fit the container
+        borderWidth: 1, // Add border to the table
+        borderColor: '#ddd', // Light gray border
+        borderRadius: 8, // Rounded corners
     },
-    subtitle: {
+    tableHeaderRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+        borderBottomWidth: 1, // Border between header and rows
+        borderBottomColor: '#ddd', // Light gray border for header separation
+    },
+    tableHeader: {
         fontSize: 18,
-        color: '#777',
-        marginBottom: 15,
+        fontWeight: '600',
+        color: '#333',
+        width: '45%',
+        textAlign: 'left',
+        padding: 10, // Add padding for header cells
     },
-    subjectItem: {
+    tableRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+        borderBottomWidth: 1, // Border between rows
+        borderBottomColor: '#ddd', // Light gray border between rows
+    },
+    tableCell: {
         fontSize: 16,
         color: '#555',
-        marginVertical: 5,
-    },
-    totalMarks: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#333',
-        marginTop: 10,
-    },
-    averageMarks: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#333',
-        marginTop: 5,
+        width: '45%',
+        padding: 10, // Add padding for table cells
     },
 });
