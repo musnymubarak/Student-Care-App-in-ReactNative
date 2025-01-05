@@ -1,21 +1,51 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Image, View } from 'react-native';
-import { PaperProvider, Text, Appbar } from 'react-native-paper';
+import { StyleSheet, Image, View, Text } from 'react-native';
+import { PaperProvider, Appbar, TextInput, Button } from 'react-native-paper';
 
-export default function HLoginome() {
+export default function Login() {
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
     return (
         <PaperProvider>
-            <Appbar.Header>
-                <Appbar.Content title="Login" />
+            <Appbar.Header style={styles.appbar}>
+                <Appbar.Content title="UoV Student Care" style={styles.appbarContent} />
             </Appbar.Header>
 
             <View style={styles.container}>
-
                 <Image
-                    source={{ uri: 'https://vau.ac.lk/wp-content/uploads/2021/08/University-of-Vavuniya-Logo-1024x1024.png' }}
+                    source={{ uri: 'https://vau.ac.lk/wp-content/uploads/2021/07/cropped-UoV_Logo.png' }}
                     style={styles.image}
                 />
+
+                <Text style={styles.heading}>Student Login</Text>
+
+                <TextInput
+                    label="Username"
+                    mode="outlined"
+                    style={styles.input}
+                    value={username}
+                    onChangeText={(text) => setUsername(text)}
+                />
+
+                <TextInput
+                    label="Password"
+                    mode="outlined"
+                    style={styles.input}
+                    secureTextEntry
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                />
+
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    labelStyle={styles.buttonLabel} // Applied labelStyle for text color
+                    onPress={() => console.log('Username:', username, 'Password:', password)}
+                >
+                    Login
+                </Button>
 
                 <StatusBar style="auto" />
             </View>
@@ -24,37 +54,40 @@ export default function HLoginome() {
 }
 
 const styles = StyleSheet.create({
+    appbar: {
+        width: '100%',
+        backgroundColor: '#510e51',
+    },
+    appbarContent: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     container: {
         flex: 1,
-        padding: 20,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#eef2f3',
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#2c3e50',
-        margin: 25,
-        textAlign: 'center',
-    },
-    description: {
-        fontSize: 16,
-        color: '#34495e',
-        textAlign: 'justify',
-        marginBottom: 20,
-        paddingHorizontal: 10,
+        padding: 20,
     },
     image: {
-        width: 150,
+        width: 320,
         height: 150,
-        borderRadius: 75,
-        marginBottom: 20,
-        borderWidth: 2,
-        borderColor: '#2c3e50',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
+        resizeMode: 'contain',
     },
-})
+    heading: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 20,
+    },
+    input: {
+        width: '80%', 
+        marginTop: 20,
+    },
+    button: {
+        width: '80%', 
+        marginTop: 20,
+        backgroundColor: '#510e51',
+    },
+    buttonLabel: {
+        color: 'white', // Set button text color to white
+    },
+});
