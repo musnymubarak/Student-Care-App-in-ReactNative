@@ -18,11 +18,6 @@ export default function App() {
         <SafeAreaView style={styles.safeAreaView}>
           <View style={styles.mainContainer}>
 
-            {/* Appbar */}
-            <Appbar.Header style={styles.appbar}>
-              <Appbar.Content title="App Title" style={styles.appbarContent} />
-            </Appbar.Header>
-
             <Stack.Navigator initialRouteName="Login">
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Profile" component={ProfilePage} />
