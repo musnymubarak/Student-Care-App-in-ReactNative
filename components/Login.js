@@ -26,14 +26,9 @@ export default function Login() {
     return (
         <PaperProvider>
             <View style={styles.mainContainer}>
-                <Appbar.Header style={styles.appbar}>
-                    <Appbar.Content title="UoV Student Care" style={styles.appbarContent} />
-                </Appbar.Header>
+                
                 <View style={styles.content}>
-                    <Image
-                        source={{ uri: 'https://vau.ac.lk/wp-content/uploads/2021/07/cropped-UoV_Logo.png' }}
-                        style={styles.image}
-                    />
+                   
                     <Text style={styles.heading}>STUDENT LOGIN</Text>
                     <TextInput
                         label="Username"
