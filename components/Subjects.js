@@ -1,12 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Text, FlatList, Button } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native'; 
+import { StyleSheet, View, Text, Button, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { PaperProvider } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function Subjects() {
-    const route = useRoute(); 
-    const navigation = useNavigation(); 
+export default function Subjects({ route }) {
+    const navigation = useNavigation();
 
-    const { subjects } = route.params || {}; 
+    // Destructure subjects from route params
+    const { subjects } = route.params || {};
 
     const renderSubject = ({ item }) => {
         return (
@@ -17,18 +19,53 @@ export default function Subjects() {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.heading}>Subjects</Text>
-            <FlatList
-                data={subjects}
-                renderItem={renderSubject}
-                keyExtractor={(item, index) => index.toString()}
-            />
-            <Button
-                title="Back to Course"
-                onPress={() => navigation.goBack()} 
-            />
-        </View>
+        <PaperProvider>
+            <View style={styles.container}>
+                <Text style={styles.heading}>Subjects</Text>
+                <FlatList
+                    data={subjects}
+                    renderItem={renderSubject}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </View>
+            <View style={styles.footerMenu}>
+                <TouchableOpacity
+                    style={styles.footerIconContainer}
+                    onPress={() => navigation.navigate('Profile')}
+                >
+                    <Icon
+                        name="account-circle"
+                        size={30}
+                        color="#510e51"
+                    />
+                    <Text style={styles.footerText}>Profile</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.footerIconContainer}
+                    onPress={() => navigation.navigate('Course')}
+                >
+                    <Icon
+                        name="graduation-cap"
+                        size={30}
+                        color="#510e51"
+                    />
+                    <Text style={styles.footerText}>Course</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.footerIconContainer}
+                    onPress={() => navigation.navigate('Subjects')}
+                >
+                    <Icon
+                        name="book"
+                        size={30}
+                        color="#510e51"
+                    />
+                    <Text style={styles.footerText}>Subjects</Text>
+                </TouchableOpacity>
+            </View>
+        </PaperProvider>
     );
 }
 
@@ -51,5 +88,24 @@ const styles = StyleSheet.create({
     },
     subjectText: {
         fontSize: 18,
+    },
+
+    footerMenu: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'absolute',
+        bottom: 20,
+        left: 0,
+        right: 0,
+        paddingHorizontal: 20,
+    },
+    footerIconContainer: {
+        alignItems: 'center',
+        flex: 1,
+    },
+    footerText: {
+        marginTop: 5,
+        fontSize: 14,
+        color: '#510e51',
     },
 });

@@ -74,14 +74,14 @@ export default function ProfilePage() {
 
                     <TouchableOpacity
                         style={styles.footerIconContainer}
-                        onPress={() => navigation.navigate('Subject')}
+                        onPress={() => navigation.navigate('Subjects')}
                     >
                         <Icon
                             name="book" 
                             size={30}
                             color="#510e51"  
                         />
-                        <Text style={styles.footerText}>Subject</Text>
+                        <Text style={styles.footerText}>Subjects</Text>
                     </TouchableOpacity>
 
                 </View>

@@ -1,6 +1,5 @@
-import { StyleSheet, View, Image , StatusBar} from 'react-native';
+import { StyleSheet, View, SafeAreaView, StatusBar } from 'react-native';
 import { PaperProvider, Appbar } from 'react-native-paper';
-import { SafeAreaView, ScrollView, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './components/Login';
@@ -15,17 +14,22 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
+        <StatusBar barStyle="dark-content" />
         <SafeAreaView style={styles.safeAreaView}>
           <View style={styles.mainContainer}>
 
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-              <Stack.Navigator initialRouteName="Login">
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Profile" component={ProfilePage} />
-                <Stack.Screen name="Course" component={Course} />
-                <Stack.Screen name="Subject" component={Subjects} />
-              </Stack.Navigator>
-            </ScrollView>
+            {/* Appbar */}
+            <Appbar.Header style={styles.appbar}>
+              <Appbar.Content title="App Title" style={styles.appbarContent} />
+            </Appbar.Header>
+
+            <Stack.Navigator initialRouteName="Login">
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Profile" component={ProfilePage} />
+              <Stack.Screen name="Course" component={Course} />
+              <Stack.Screen name="Subjects" component={Subjects} />
+            </Stack.Navigator>
+
           </View>
         </SafeAreaView>
       </NavigationContainer>
@@ -39,7 +43,6 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    justifyContent: 'space-between',
   },
   appbar: {
     backgroundColor: '#510e51',
@@ -48,16 +51,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  content: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: 320,
-    height: 150,
-    resizeMode: 'contain',
-  },
-  scrollContainer: {
-    flexGrow: 1,
-  }
 });
