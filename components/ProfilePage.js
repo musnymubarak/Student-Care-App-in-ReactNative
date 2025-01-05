@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // AsyncStorage for persistent data storage
 import FooterMenu from '../common/FooterMenu'; // Import the FooterMenu component from the common folder
+import Footer from '../common/Footer';
 
 export default function ProfilePage() {
     const [user, setUser] = useState(null);
@@ -56,7 +57,8 @@ export default function ProfilePage() {
                     <Text style={[styles.email, styles.leftAligned]}>Age: {user.age}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Blood Group: {user.blood_group}</Text>
                 </View>
-                
+
+                <Footer />
                 <FooterMenu />
             </View>
         </PaperProvider>

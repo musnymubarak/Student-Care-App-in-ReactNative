@@ -5,6 +5,7 @@ import { PaperProvider, Appbar, TextInput, Button } from 'react-native-paper';
 import { students } from '../assets/StudentsDb'; 
 import { useNavigation } from '@react-navigation/native'; 
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import Footer from '../common/Footer';
 
 export default function Login() {
     const [username, setUsername] = React.useState('');
@@ -54,12 +55,10 @@ export default function Login() {
                     </Button>
                 </View>
 
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>
-                        UoV © {new Date().getFullYear()}
-                    </Text>
-                </View>
+
             </View>
+
+            <Footer />
             <StatusBar style="auto" />
         </PaperProvider>
     );
@@ -103,18 +102,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#510e51',
     },
     buttonLabel: {
-        color: 'white',
-    },
-    footer: {
-        padding: 10,
-        backgroundColor: '#510e51',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderTopWidth: 1,
-        borderTopColor: '#ddd',
-    },
-    footerText: {
-        fontSize: 18,
         color: 'white',
     },
 });

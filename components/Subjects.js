@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PaperProvider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native'; 
 import FooterMenu from '../common/FooterMenu';
+import Footer from '../common/Footer';
 
 export default function Subjects() {
     const [studentData, setStudentData] = useState(null);
@@ -92,6 +93,8 @@ export default function Subjects() {
                 )}
             </View>
 
+            
+            <Footer />
             <FooterMenu />
         </PaperProvider>
     );

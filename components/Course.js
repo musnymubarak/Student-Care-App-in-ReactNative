@@ -6,6 +6,7 @@ import { students } from '../assets/StudentsDb';
 import { courses } from '../assets/StudentsDb'; 
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import FooterMenu from '../common/FooterMenu'; 
+import Footer from '../common/Footer';
 
 export default function Course() {
     const navigation = useNavigation();
@@ -58,6 +59,7 @@ export default function Course() {
                 <View style={styles.separator} />
             </View>
 
+            <Footer />
             <FooterMenu />
         </PaperProvider>
     );
