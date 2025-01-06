@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { students, courses, subjects, marks } from '../assets/StudentsDb';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PaperProvider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -91,7 +91,10 @@ export default function Subjects() {
                 ) : (
                     <ActivityIndicator size="large" color="#4CAF50" />
                 )}
-                <Footer />
+                {/* Wrapping Footer inside ScrollView for scrollability */}
+                <ScrollView style={styles.scrollFooter}>
+                    <Footer />
+                </ScrollView>
                 <FooterMenu />
             </View>
         </PaperProvider>
@@ -157,5 +160,8 @@ const styles = StyleSheet.create({
         color: '#555',
         width: '45%',
         padding: 10,
+    },
+    scrollFooter: {
+        marginTop: 20,
     },
 });
