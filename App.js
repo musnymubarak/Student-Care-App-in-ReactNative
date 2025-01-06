@@ -7,6 +7,7 @@ import Login from './components/Login';
 import ProfilePage from './components/ProfilePage';
 import Subjects from './components/Subjects';
 import Course from './components/Course';
+import logo from './assets/Logo.png';
 
 // Create a Stack Navigator
 const Stack = createStackNavigator();
@@ -15,9 +16,7 @@ const Stack = createStackNavigator();
 const ScreenLayout = ({ children }) => (
   <View style={styles.screenContainer}>
     <Image
-      source={{
-        uri: 'https://vau.ac.lk/wp-content/uploads/2021/07/cropped-UoV_Logo.png',
-      }}
+      source={logo}
       style={styles.logo}
     />
     <View style={styles.content}>{children}</View>
