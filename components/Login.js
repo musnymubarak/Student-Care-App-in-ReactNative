@@ -2,15 +2,17 @@ import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { PaperProvider, TextInput, Button } from 'react-native-paper';
-import { students } from '../assets/StudentsDb';
+import { students } from '../assets/StudentsDb'; // Remember security warnings!
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Footer from '../common/Footer';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Login() {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [error, setError] = React.useState('');
+    const [passwordVisible, setPasswordVisible] = React.useState(false);
     const navigation = useNavigation();
 
     const handleLogin = async () => {
@@ -19,7 +21,9 @@ export default function Login() {
             return;
         }
 
-        const student = students.find(student => student.username === username && student.password === password);
+        const student = students.find(
+            (student) => student.username === username && student.password === password
+        );
 
         if (student) {
             await AsyncStorage.setItem('username', username);
@@ -40,15 +44,27 @@ export default function Login() {
                             mode="outlined"
                             style={styles.input}
                             value={username}
-                            onChangeText={(text) => setUsername(text)}
+                            onChangeText={setUsername}
                         />
                         <TextInput
                             label="Password"
                             mode="outlined"
                             style={styles.input}
-                            secureTextEntry
+                            secureTextEntry={!passwordVisible}
                             value={password}
-                            onChangeText={(text) => setPassword(text)}
+                            onChangeText={setPassword}
+                            right={
+                                <TextInput.Icon
+                                    icon={() => ( // Correct way to render an Icon
+                                        <Icon
+                                            name={passwordVisible ? 'eye-off' : 'eye'}
+                                            size={20}
+                                            color="#510e51"
+                                        />
+                                    )}
+                                    onPress={() => setPasswordVisible(!passwordVisible)}
+                                />
+                            }
                         />
                         <Button
                             mode="contained"
@@ -70,7 +86,6 @@ export default function Login() {
                         ) : null}
                     </View>
                 </ScrollView>
-
                 <Footer />
             </View>
             <StatusBar style="auto" />
