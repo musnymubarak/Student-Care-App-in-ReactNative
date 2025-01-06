@@ -79,3 +79,12 @@ This project is licensed under the MIT License.
 ## Authors
 
 - Musny – _Initial Work_ – (https://github.com/your-musnymubarak)
+
+6. Sample Images
+
+![Screenshot 2025-01-05 230912](https://github.com/user-attachments/assets/3a6189d0-6e6f-4ace-91d5-688973ab20a1)
+![Screenshot 2025-01-05 230906](https://github.com/user-attachments/assets/f58ade3a-0e26-49d4-ba6b-745fdac723de)
+![Screenshot 2025-01-05 230858](https://github.com/user-attachments/assets/a281fef8-dcc6-4aed-8b98-12d1949233e5)
+![Screenshot 2025-01-05 230839](https://github.com/user-attachments/assets/25ba4313-efbb-4786-a172-1803651a3f3e)
+![Screenshot 2025-01-05 230808](https://github.com/user-attachments/assets/999d03be-dcea-4204-b391-841f461628db)
+
