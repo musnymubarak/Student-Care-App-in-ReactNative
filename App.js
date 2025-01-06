@@ -33,60 +33,64 @@ export default function App() {
           <Stack.Navigator initialRouteName="Login">
             <Stack.Screen
               name="Login"
-              component={(props) => (
+              options={{
+                title: 'UoV Student Care',
+                headerStyle: { backgroundColor: '#510e51' },
+                headerTintColor: '#fff',
+                headerTitleAlign: 'center',
+              }}
+            >
+              {(props) => (
                 <ScreenLayout>
                   <Login {...props} />
                 </ScreenLayout>
               )}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Profile"
               options={{
                 title: 'UoV Student Care',
                 headerStyle: { backgroundColor: '#510e51' },
                 headerTintColor: '#fff',
                 headerTitleAlign: 'center',
               }}
-            />
-            <Stack.Screen
-              name="Profile"
-              component={(props) => (
+            >
+              {(props) => (
                 <ScreenLayout>
                   <ProfilePage {...props} />
                 </ScreenLayout>
               )}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Course"
               options={{
                 title: 'UoV Student Care',
                 headerStyle: { backgroundColor: '#510e51' },
                 headerTintColor: '#fff',
                 headerTitleAlign: 'center',
               }}
-            />
-            <Stack.Screen
-              name="Course"
-              component={(props) => (
+            >
+              {(props) => (
                 <ScreenLayout>
                   <Course {...props} />
                 </ScreenLayout>
               )}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Subjects"
               options={{
                 title: 'UoV Student Care',
                 headerStyle: { backgroundColor: '#510e51' },
                 headerTintColor: '#fff',
                 headerTitleAlign: 'center',
               }}
-            />
-            <Stack.Screen
-              name="Subjects"
-              component={(props) => (
+            >
+              {(props) => (
                 <ScreenLayout>
                   <Subjects {...props} />
                 </ScreenLayout>
               )}
-              options={{
-                title: 'UoV Student Care',
-                headerStyle: { backgroundColor: '#510e51' },
-                headerTintColor: '#fff',
-                headerTitleAlign: 'center',
-              }}
-            />
+            </Stack.Screen>
           </Stack.Navigator>
         </SafeAreaView>
       </NavigationContainer>

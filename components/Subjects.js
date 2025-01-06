@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { students, courses, subjects, marks } from '../assets/StudentsDb';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PaperProvider } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
 import FooterMenu from '../common/FooterMenu';
 import Footer from '../common/Footer';
 
@@ -65,28 +65,29 @@ export default function Subjects() {
             <View style={styles.container}>
                 <Text style={styles.title}>Student Subjects and Marks</Text>
                 {studentData ? (
-                    <ScrollView contentContainerStyle={styles.dataContainer}>
-                        <Text style={styles.courseTitle}>{studentData.courseTitle}</Text>
-                        <Text style={styles.totalSubjects}> {studentData.totalSubjects} Subjects | Average: {studentData.averageMarks}</Text>
-
-                        <View style={styles.tableContainer}>
-                            <View style={styles.tableHeaderRow}>
-                                <Text style={styles.tableHeader}>Subject Name</Text>
-                                <Text style={styles.tableHeader}>Marks</Text>
+                    <FlatList
+                        data={studentData.subjects}
+                        keyExtractor={(item, index) => index.toString()}
+                        ListHeaderComponent={
+                            <>
+                                <Text style={styles.courseTitle}>{studentData.courseTitle}</Text>
+                                <Text style={styles.totalSubjects}>
+                                    {studentData.totalSubjects} Subjects | Average: {studentData.averageMarks}
+                                </Text>
+                                <View style={styles.tableHeaderRow}>
+                                    <Text style={styles.tableHeader}>Subject Name</Text>
+                                    <Text style={styles.tableHeader}>Marks</Text>
+                                </View>
+                            </>
+                        }
+                        renderItem={({ item }) => (
+                            <View style={styles.tableRow}>
+                                <Text style={styles.tableCell}>{item.subjectName}</Text>
+                                <Text style={styles.tableCell}>{item.marks}</Text>
                             </View>
-
-                            <FlatList
-                                data={studentData.subjects}
-                                keyExtractor={(item, index) => index.toString()}
-                                renderItem={({ item }) => (
-                                    <View style={styles.tableRow}>
-                                        <Text style={styles.tableCell}>{item.subjectName}</Text>
-                                        <Text style={styles.tableCell}>{item.marks}</Text>
-                                    </View>
-                                )}
-                            />
-                        </View>
-                    </ScrollView>
+                        )}
+                        contentContainerStyle={styles.dataContainer}
+                    />
                 ) : (
                     <ActivityIndicator size="large" color="#4CAF50" />
                 )}
@@ -124,13 +125,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: 'center',
     },
-    averageMarks: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#333',
-        marginBottom: 20,
-        textAlign: 'center',
-    },
     dataContainer: {
         marginTop: 20,
         backgroundColor: '#fff',
@@ -142,20 +136,12 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 3,
     },
-    tableContainer: {
-        marginTop: 20,
-        alignSelf: 'center', 
-        width: '90%', 
-        borderWidth: 1, 
-        borderColor: '#ddd', 
-        borderRadius: 8, 
-    },
     tableHeaderRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 5,
         borderBottomWidth: 1,
-        borderBottomColor: '#ddd', 
+        borderBottomColor: '#ddd',
     },
     tableHeader: {
         fontSize: 18,
@@ -163,19 +149,19 @@ const styles = StyleSheet.create({
         color: '#333',
         width: '45%',
         textAlign: 'left',
-        padding: 10, 
+        padding: 10,
     },
     tableRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 5,
-        borderBottomWidth: 1, 
-        borderBottomColor: '#ddd', 
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
     },
     tableCell: {
         fontSize: 16,
         color: '#555',
         width: '45%',
-        padding: 10, 
+        padding: 10,
     },
 });
