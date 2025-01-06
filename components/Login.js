@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { PaperProvider, TextInput, Button } from 'react-native-paper';
 import { students } from '../assets/StudentsDb';
 import { useNavigation } from '@react-navigation/native';
@@ -32,45 +32,47 @@ export default function Login() {
     return (
         <PaperProvider>
             <View style={styles.mainContainer}>
-                <View style={styles.content}>
-                    <Text style={styles.heading}>STUDENT LOGIN</Text>
-                    <TextInput
-                        label="Username"
-                        mode="outlined"
-                        style={styles.input}
-                        value={username}
-                        onChangeText={(text) => setUsername(text)}
-                    />
-                    <TextInput
-                        label="Password"
-                        mode="outlined"
-                        style={styles.input}
-                        secureTextEntry
-                        value={password}
-                        onChangeText={(text) => setPassword(text)}
-                    />
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        labelStyle={styles.buttonLabel}
-                        onPress={handleLogin}
-                    >
-                        Login
-                    </Button>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <View style={styles.content}>
+                        <Text style={styles.heading}>STUDENT LOGIN</Text>
+                        <TextInput
+                            label="Username"
+                            mode="outlined"
+                            style={styles.input}
+                            value={username}
+                            onChangeText={(text) => setUsername(text)}
+                        />
+                        <TextInput
+                            label="Password"
+                            mode="outlined"
+                            style={styles.input}
+                            secureTextEntry
+                            value={password}
+                            onChangeText={(text) => setPassword(text)}
+                        />
+                        <Button
+                            mode="contained"
+                            style={styles.button}
+                            labelStyle={styles.buttonLabel}
+                            onPress={handleLogin}
+                        >
+                            Login
+                        </Button>
 
-                    {error ? (
-                        <View style={styles.errorContainer}>
-                            <Image
-                                source={require('../assets/error.png')}
-                                style={styles.errorImage}
-                            />
-                            <Text style={styles.errorText}>{error}</Text>
-                        </View>
-                    ) : null}
-                </View>
+                        {error ? (
+                            <View style={styles.errorContainer}>
+                                <Image
+                                    source={require('../assets/error.png')}
+                                    style={styles.errorImage}
+                                />
+                                <Text style={styles.errorText}>{error}</Text>
+                            </View>
+                        ) : null}
+                    </View>
+                </ScrollView>
+
+                <Footer />
             </View>
-
-            <Footer />
             <StatusBar style="auto" />
         </PaperProvider>
     );
@@ -80,17 +82,24 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         justifyContent: 'space-between',
-        padding: 20,
+        backgroundColor: '#fff',
+    },
+    scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
     },
     content: {
-        flex: 1,
+        width: '100%',
         alignItems: 'center',
     },
     heading: {
-        fontSize: 32,
+        fontSize: 40,
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
+        color: '#510e51',
     },
     input: {
         width: '80%',
@@ -107,15 +116,15 @@ const styles = StyleSheet.create({
     errorContainer: {
         marginTop: 20,
         flexDirection: 'row',
-        alignItems: 'center', 
+        alignItems: 'center',
     },
     errorImage: {
-        width: 20,  
-        height: 20,  
-        marginRight: 10,  
+        width: 20,
+        height: 20,
+        marginRight: 10,
     },
     errorText: {
-        color: '#510e51', 
+        color: '#510e51',
         fontSize: 16,
         fontWeight: 'bold',
     },

@@ -53,7 +53,7 @@ export default function Subjects() {
                 subjects: studentSubjects,
                 totalSubjects: studentSubjects.length,
                 totalMarks,
-                averageMarks: Math.round(averageMarks) // Round to the nearest whole number
+                averageMarks: Math.round(averageMarks) 
             });
         };
 
@@ -69,7 +69,7 @@ export default function Subjects() {
                         data={studentData.subjects}
                         keyExtractor={(item, index) => index.toString()}
                         ListHeaderComponent={
-                            <>
+                            <View style={styles.headerContainer}>
                                 <Text style={styles.courseTitle}>{studentData.courseTitle}</Text>
                                 <Text style={styles.totalSubjects}>
                                     {studentData.totalSubjects} Subjects | Average: {studentData.averageMarks}
@@ -78,7 +78,7 @@ export default function Subjects() {
                                     <Text style={styles.tableHeader}>Subject Name</Text>
                                     <Text style={styles.tableHeader}>Marks</Text>
                                 </View>
-                            </>
+                            </View>
                         }
                         renderItem={({ item }) => (
                             <View style={styles.tableRow}>
@@ -86,15 +86,14 @@ export default function Subjects() {
                                 <Text style={styles.tableCell}>{item.marks}</Text>
                             </View>
                         )}
-                        contentContainerStyle={styles.dataContainer}
+                        contentContainerStyle={styles.listContent}
                     />
                 ) : (
                     <ActivityIndicator size="large" color="#4CAF50" />
                 )}
+                <Footer />
+                <FooterMenu />
             </View>
-
-            <Footer />
-            <FooterMenu />
         </PaperProvider>
     );
 }
@@ -102,7 +101,6 @@ export default function Subjects() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
         backgroundColor: '#f5f5f5',
     },
     title: {
@@ -110,6 +108,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
         textAlign: 'center',
+        marginVertical: 20,
+    },
+    headerContainer: {
         marginBottom: 20,
     },
     courseTitle: {
@@ -125,16 +126,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: 'center',
     },
-    dataContainer: {
-        marginTop: 20,
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 15,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        elevation: 3,
+    listContent: {
+        paddingHorizontal: 20,
+        paddingBottom: 20,
     },
     tableHeaderRow: {
         flexDirection: 'row',

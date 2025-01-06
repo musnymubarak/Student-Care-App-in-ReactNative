@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
-import { students } from '../assets/StudentsDb'; 
-import { courses } from '../assets/StudentsDb'; 
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
-import FooterMenu from '../common/FooterMenu'; 
+import { students } from '../assets/StudentsDb';
+import { courses } from '../assets/StudentsDb';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import FooterMenu from '../common/FooterMenu';
 import Footer from '../common/Footer';
 
 export default function Course() {
@@ -44,32 +44,43 @@ export default function Course() {
 
     return (
         <PaperProvider>
-            <View style={styles.container}>
-                <Text style={styles.courseName}>{courseData.name}</Text>
-                <Text style={styles.courseCode}>Code: {courseData.course_code} | Dept: {courseData.department}</Text>
+            <View style={styles.mainContainer}>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <View style={styles.content}>
+                        <Text style={styles.courseName}>{courseData.name}</Text>
+                        <Text style={styles.courseCode}>Code: {courseData.course_code} | Dept: {courseData.department}</Text>
 
-                <View style={styles.separator} />
+                        <View style={styles.separator} />
 
-                <Text style={[styles.sectionTitle, styles.leftAligned]}>Course Information</Text>
-                <Text style={[styles.courseInfo, styles.leftAligned]}>Code: {courseData.course_code}</Text>
-                <Text style={[styles.courseInfo, styles.leftAligned]}>Department: {courseData.department}</Text>
-                <Text style={[styles.courseInfo, styles.leftAligned]}>Duration: {courseData.duration}</Text>
-                <Text style={[styles.courseInfo, styles.leftAligned]}>Description: {courseData.description}</Text>
-                
-                <View style={styles.separator} />
+                        <Text style={[styles.sectionTitle, styles.leftAligned]}>Course Information</Text>
+                        <Text style={[styles.courseInfo, styles.leftAligned]}>Code: {courseData.course_code}</Text>
+                        <Text style={[styles.courseInfo, styles.leftAligned]}>Department: {courseData.department}</Text>
+                        <Text style={[styles.courseInfo, styles.leftAligned]}>Duration: {courseData.duration}</Text>
+                        <Text style={[styles.courseInfo, styles.leftAligned]}>Description: {courseData.description}</Text>
+                    </View>
+
+                    {/* Footer inside the ScrollView */}
+                    <Footer />
+                </ScrollView>
+
+                {/* Fixed Footer Menu */}
+                <FooterMenu style={styles.footerMenu} />
             </View>
-
-            <Footer />
-            <FooterMenu />
         </PaperProvider>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    mainContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    scrollContent: {
+        flexGrow: 1,
+    },
+    content: {
         flex: 1,
         padding: 20,
-        backgroundColor: 'White',
     },
     loadingContainer: {
         flex: 1,
@@ -90,17 +101,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 10,
     },
-    description: {
-        fontSize: 16,
-        color: '#555',
-        textAlign: 'center',
-        marginBottom: 20,
-    },
     separator: {
         width: '80%',
         height: 1,
         backgroundColor: '#ddd',
         marginVertical: 15,
+        alignSelf: 'center',
     },
     sectionTitle: {
         fontSize: 20,
@@ -117,5 +123,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#555',
         marginBottom: 10,
+    },
+    footerMenu: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
     },
 });

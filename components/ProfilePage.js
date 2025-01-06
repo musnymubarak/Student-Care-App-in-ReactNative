@@ -39,7 +39,7 @@ export default function ProfilePage() {
             <View style={styles.mainContainer}>
                 <ScrollView contentContainerStyle={styles.profileContent}>
                     <View style={styles.profileHeader}>
-                        <Image source={user.profile_pic} style={styles.profilePic} />
+                        <Image source={user.profile_pic} style={[styles.profilePic, { borderWidth: 0 }]} />
                         <Text style={styles.heading}>{user.name}</Text>
                         <Text style={styles.email}>Age: {user.age} | Gender: {user.gender}</Text>
                     </View>
@@ -56,9 +56,10 @@ export default function ProfilePage() {
                     <Text style={[styles.email, styles.leftAligned]}>Gender: {user.gender}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Age: {user.age}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Blood Group: {user.blood_group}</Text>
+                    <Footer />
                 </ScrollView>
 
-                <Footer />
+                
             </View>
             <FooterMenu style={styles.footerMenu} />
         </PaperProvider>
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         borderRadius: 75,
         overflow: 'hidden',
+        
     },
     heading: {
         fontSize: 26,

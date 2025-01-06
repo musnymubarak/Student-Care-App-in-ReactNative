@@ -1,30 +1,25 @@
+import { View, Text } from 'react-native';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 
-const Footer = () => {
+export default function Footer() {
   return (
     <View style={styles.footer}>
-      <Text style={styles.footerText}>
-        UoV © {new Date().getFullYear()}
-      </Text>
+      <Text style={styles.footerText}>UoV © 2025</Text>
     </View>
   );
-};
+}
 
-
-const styles = StyleSheet.create({
+const styles = {
   footer: {
-    padding: 10,
-    backgroundColor: '#510e51',
+    backgroundColor: '#4b0150',
     alignItems: 'center',
     justifyContent: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    marginHorizontal: 0, 
+    marginVertical: 20,
+    width: '100%',
   },
   footerText: {
-    fontSize: 18,
-    color: 'white',
+    color: '#fff',
+    padding: 20,
   },
-});
-
-export default Footer;
+};
