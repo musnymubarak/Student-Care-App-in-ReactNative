@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { PaperProvider, TextInput, Button } from 'react-native-paper';
-import { students } from '../assets/StudentsDb'; // Remember security warnings!
+import { students, courses, subjects, marks } from '../assets/StudentsDb'; 
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Footer from '../common/Footer';
@@ -27,7 +27,40 @@ export default function Login() {
 
         if (student) {
             await AsyncStorage.setItem('username', username);
-            navigation.navigate('Profile');
+
+            // Fetch student's course
+            const studentCourse = courses.find(course => course.id === student.course_id);
+
+            if (!studentCourse) {
+                setError('Course not found');
+                return;
+            }
+
+            // Fetch student's subjects
+            const studentSubjects = subjects.filter(subject => subject.course_id === student.course_id);
+
+            // Fetch student's marks
+            const studentMarks = marks.filter(mark => mark.student_id === student.id);
+
+            // Combine subjects and marks
+            const studentSubjectsWithMarks = studentSubjects.map(subject => {
+                const mark = studentMarks.find(mark => mark.subject_id === subject.id);
+                return {
+                    subjectName: subject.name,
+                    marks: mark ? mark.marks : 0
+                };
+            });
+
+            // Navigate to profile page with student data
+            navigation.navigate('Profile', { 
+                user: student, 
+                course: studentCourse.name,
+                subjects: studentSubjectsWithMarks,
+                totalSubjects: studentSubjectsWithMarks.length,
+                totalMarks: studentSubjectsWithMarks.reduce((acc, curr) => acc + curr.marks, 0),
+                averageMarks: studentSubjectsWithMarks.length > 0 ? 
+                               Math.round(studentSubjectsWithMarks.reduce((acc, curr) => acc + curr.marks, 0) / studentSubjectsWithMarks.length) : 0
+            });
         } else {
             setError('Username or password incorrect');
         }
@@ -53,9 +86,9 @@ export default function Login() {
                             secureTextEntry={!passwordVisible}
                             value={password}
                             onChangeText={setPassword}
-                            right={
+                            right={(
                                 <TextInput.Icon
-                                    icon={() => ( // Correct way to render an Icon
+                                    icon={() => (
                                         <Icon
                                             name={passwordVisible ? 'eye-off' : 'eye'}
                                             size={20}
@@ -64,7 +97,7 @@ export default function Login() {
                                     )}
                                     onPress={() => setPasswordVisible(!passwordVisible)}
                                 />
-                            }
+                            )}
                         />
                         <Button
                             mode="contained"

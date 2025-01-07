@@ -3,14 +3,14 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const FooterMenu = () => {
+const FooterMenu = ({ currentUser }) => {
     const navigation = useNavigation();
 
     return (
         <View style={styles.footerMenu}>
             <TouchableOpacity
                 style={styles.footerIconContainer}
-                onPress={() => navigation.navigate('Profile')}
+                onPress={() => navigation.navigate('Profile', { user: currentUser })}
             >
                 <Icon name="account-circle" size={30} color="#510e51" />
                 <Text style={styles.footerText}>Profile</Text>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1f1f1',
         borderTopWidth: 1,
         borderTopColor: '#ddd',
-        position: 'absolute',  // Fix to bottom
+        position: 'absolute', 
         bottom: 0,
         left: 0,
         right: 0,

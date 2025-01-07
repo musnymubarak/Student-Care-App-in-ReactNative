@@ -1,35 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
-import { students } from '../assets/StudentsDb';
-import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
-import FooterMenu from '../common/FooterMenu'; 
+import FooterMenu from '../common/FooterMenu';
 import Footer from '../common/Footer';
 
-export default function ProfilePage() {
-    const [user, setUser] = useState(null);
-    const navigation = useNavigation();
-
-    useEffect(() => {
-        const getLoggedInUsername = async () => {
-            try {
-                const loggedInUsername = await AsyncStorage.getItem('username');
-                const student = students.find(student => student.username === loggedInUsername);
-
-                if (student) {
-                    setUser(student); 
-                } else {
-                    navigation.navigate('Login');
-                }
-            } catch (error) {
-                console.error('Error fetching username from AsyncStorage', error); 
-            }
-        };
-
-        getLoggedInUsername();
-    }, [navigation]);
-
+export default function ProfilePage({ route }) {
+    const { user } = route.params; 
     if (!user) {
         return <Text>Loading...</Text>; 
     }
@@ -51,17 +27,16 @@ export default function ProfilePage() {
                     <Text style={[styles.phone, styles.leftAligned]}>Phone: {user.phone}</Text>
                     <Text style={[styles.address, styles.leftAligned]}>Address: {user.address}</Text>
 
-                
                     <Text style={[styles.sectionTitle, styles.leftAligned]}>Biological Information</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Gender: {user.gender}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Age: {user.age}</Text>
                     <Text style={[styles.email, styles.leftAligned]}>Blood Group: {user.blood_group}</Text>
+                    
                     <Footer />
                 </ScrollView>
 
-                
+                <FooterMenu currentUser={user} style={styles.footerMenu} />
             </View>
-            <FooterMenu style={styles.footerMenu} />
         </PaperProvider>
     );
 }
@@ -69,8 +44,8 @@ export default function ProfilePage() {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        paddingBottom: 70, 
-        position: 'relative', 
+        paddingBottom: 70,
+        position: 'relative',
     },
     profileContent: {
         flexGrow: 1,
@@ -80,7 +55,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     profileHeader: {
-        alignItems: 'center', 
+        alignItems: 'center',
         marginBottom: 20,
     },
     profilePic: {
@@ -89,14 +64,13 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         borderRadius: 75,
         overflow: 'hidden',
-        
     },
     heading: {
         fontSize: 26,
         fontWeight: 'bold',
         marginBottom: 15,
         color: '#333',
-        textAlign: 'center', 
+        textAlign: 'center',
     },
     email: {
         fontSize: 16,
@@ -118,7 +92,7 @@ const styles = StyleSheet.create({
     address: {
         fontSize: 16,
         color: '#555',
-        textAlign: 'left', 
+        textAlign: 'left',
     },
     leftAligned: {
         textAlign: 'left',

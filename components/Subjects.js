@@ -9,26 +9,24 @@ import Footer from '../common/Footer';
 
 export default function Subjects() {
     const [studentData, setStudentData] = useState(null);
+    const [user, setUser] = useState(null);
     const navigation = useNavigation();
 
     useEffect(() => {
         const fetchStudentData = async () => {
             const username = await AsyncStorage.getItem('username');
-
             if (!username) {
                 console.error('No username found in AsyncStorage');
                 return;
             }
 
             const student = students.find(student => student.username === username);
-
             if (!student) {
                 console.error('Student not found');
                 return;
             }
 
             const studentCourse = courses.find(course => course.id === student.course_id);
-
             if (!studentCourse) {
                 console.error('Course not found');
                 return;
@@ -53,8 +51,10 @@ export default function Subjects() {
                 subjects: studentSubjects,
                 totalSubjects: studentSubjects.length,
                 totalMarks,
-                averageMarks: Math.round(averageMarks) 
+                averageMarks: Math.round(averageMarks)
             });
+
+            setUser(student);
         };
 
         fetchStudentData();
@@ -91,11 +91,10 @@ export default function Subjects() {
                 ) : (
                     <ActivityIndicator size="large" color="#4CAF50" />
                 )}
-                {/* Wrapping Footer inside ScrollView for scrollability */}
                 <ScrollView style={styles.scrollFooter}>
-                    <Footer />
+                    <Footer currentUser={user} />
                 </ScrollView>
-                <FooterMenu />
+                <FooterMenu currentUser={user} />
             </View>
         </PaperProvider>
     );
