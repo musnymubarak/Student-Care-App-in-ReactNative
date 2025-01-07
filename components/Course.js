@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
 import { students, courses } from '../assets/StudentsDb';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,7 +7,6 @@ import FooterMenu from '../common/FooterMenu';
 import Footer from '../common/Footer';
 
 export default function Course() {
-    const navigation = useNavigation();
     const [studentData, setStudentData] = useState(null);
     const [courseData, setCourseData] = useState(null);
 

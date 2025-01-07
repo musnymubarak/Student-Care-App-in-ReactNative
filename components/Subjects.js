@@ -3,14 +3,12 @@ import { students, courses, subjects, marks } from '../assets/StudentsDb';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PaperProvider } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 import FooterMenu from '../common/FooterMenu';
 import Footer from '../common/Footer';
 
 export default function Subjects() {
     const [studentData, setStudentData] = useState(null);
     const [user, setUser] = useState(null);
-    const navigation = useNavigation();
 
     useEffect(() => {
         const fetchStudentData = async () => {
